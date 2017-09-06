@@ -14,7 +14,6 @@
 #echo $OPTIONS
 
 #PORTS=$( IFS=$'\n'; echo "${OPTIONS[@]}")
-#PORTS=${PORTS%?}
 #PORTS=${PORTS// /,}
 
 #apt-get install iptables -y --force-yes --assume-yes
