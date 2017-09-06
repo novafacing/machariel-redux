@@ -188,6 +188,13 @@ int firewall(const char *os, const char *ports) {
 int passwords(const char *os, const char *password) {
     if (strcmp(os, "ubuntu") == 0) {
         printf("Running passwords on %s", os);
+        char buf[1];
+        int requiredsize = snprintf(buf, 0, "./ubuntuPasswords.sh -p \"%s\"", password);
+        char command[requiredsize];
+        snprintf(command, sizeof command + 1, "./ubuntuPasswords.sh -p \"%s\"", password);
+        printf("Debug: %s\n", command);
+        printf("Debug: %lu\n", sizeof command);
+        system(command);
     } if (strcmp(os, "centos") == 0) {
         printf("Running passwords on %s", os);
     } if (strcmp(os, "fedora") == 0) {

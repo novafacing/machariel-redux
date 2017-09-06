@@ -19,11 +19,12 @@
 
 #apt-get install iptables -y --force-yes --assume-yes
 #iptables -S >> /machariel/logs/iptables.log
-#iptables -F
-#iptables -A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable
-#iptables -A INPUT -p tcp -j REJECT --reject-with tcp-reset
-#iptables -A INPUT -j REJECT --reject-with-icmp-proto-unreachable
-#echo $PORTS
-#iptables -A INPUT -p tcp -m tcp -m multiport ! --dports $PORTS -j DROP
+#mv ./rules.v4 /etc/iptables/rules.v4
+#iptables -I INPUT 1 -i lo -j ACCEPT
+#iptables -I INPUT 2 -p tcp -m tcp -m multiport ! --dports $PORTS -j DROP
+#iptables -A INPUT -j DROP
+#apt-get install iptables-persistent -y --force-yes --assume-yes
+#invoke-rc.d iptables-persistent save
+#mv ./rules.v6 /etc/iptables/rules.v6
 
 echo "THIS UTILITY IS IN SAFE MODE. UNCOMMENT TO ENABLE."
