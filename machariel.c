@@ -6,6 +6,7 @@
 #include <string.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <malloc.h>
 
 /* Function Declarations */
 int usage();
@@ -13,9 +14,10 @@ int checkroot();
 int checkconfigured();
 int getworking();
 
-int allactions (const char *os);
+int allactions (const char *os, const char *password, const char *);
 int backup (const char *os);
 int config (const char *os);
+int firewall(const char *os, const char *ports);
 int updates (const char *os);
 int passwords (const char *os, const char *password);
 int policies (const char *os);
@@ -63,33 +65,73 @@ void *thoraciel(void *arg) {
   return NULL;
 }
 
-int allactions(const char *os) {
-    if (strcmp(os "ubuntu") == 0) {
+int allactions(const char *os, const char *password, const char *ports) {
+    if (strcmp(os, "ubuntu") == 0) {
         printf("Running all actions on %s", os);
-    } else if (strcmp(os "centos") == 0) {
+        scans(os);
+        backup(os);
+        firewall(os, ports);
+        policies(os);
+        passwords(os, password);
+        malware(os);
+        updates(os);
+    } if (strcmp(os, "centos") == 0) {
         printf("Running all actions on %s", os);
-    } else if (strcmp(os "fedora") == 0)) {
+        scans(os);
+        backup(os);
+        firewall(os, ports);
+        policies(os);
+        passwords(os, password);
+        malware(os);
+        updates(os);
+    } if (strcmp(os, "fedora") == 0) {
         printf("Running all actions on %s", os);
-    } else if (strcmp(os "gentoo") == 0)) {
+        scans(os);
+        backup(os);
+        firewall(os, ports);
+        policies(os);
+        passwords(os, password);
+        malware(os);
+        updates(os);
+    } if (strcmp(os, "gentoo") == 0) {
         printf("Running all actions on %s", os);
-    } else if (strcmp(os "freebsd") == 0)) {
+        scans(os);
+        backup(os);
+        firewall(os, ports);
+        policies(os);
+        passwords(os, password);
+        malware(os);
+        updates(os);
+    } if (strcmp(os, "freebsd") == 0) {
         printf("Running all actions on %s", os);
+        scans(os);
+        backup(os);
+        firewall(os, ports);
+        policies(os);
+        passwords(os, password);
+        malware(os);
+        updates(os);
     } else {
         return 0;
     }
 }
 
 int backup(const char *os) {
-    if (strcmp(os "ubuntu") == 0) {
+    if (strcmp(os, "ubuntu") == 0) {
         printf("Running backup on %s", os);
-    } else if (strcmp(os "centos") == 0) {
+        system("sh ubuntuBackup.sh");
+    } if (strcmp(os, "centos") == 0) {
         printf("Running backup on %s", os);
-    } else if (strcmp(os "fedora") == 0)) {
+        system("sh centosBakup.sh");
+    } if (strcmp(os, "fedora") == 0) {
         printf("Running backup on %s", os);
-    } else if (strcmp(os "gentoo") == 0)) {
+        system("sh fedoraBackup.sh");
+    } if (strcmp(os, "gentoo") == 0) {
         printf("Running backup on %s", os);
-    } else if (strcmp(os "freebsd") == 0)) {
+        printf("sh fedoraBakup.sh");
+    } if (strcmp(os, "freebsd") == 0) {
         printf("Running backup on %s", os);
+        printf("sh freebsdBakup.sh");
     } else {
         return 0;
     }
@@ -99,19 +141,19 @@ int config(const char *os) {
         printf("Running config on %s", os);
         system("touch ./configflag");
         system("sh ubuntuConfig.sh");
-    } else if (strcmp(os "centos") == 0)) {
+    } if (strcmp(os, "centos") == 0) {
         printf("Running config on %s", os);
         system("touch ./configflag");
         system("sh centosConfig.sh");
-    } else if (strcmp(os "fedora") == 0)) {
+    } if (strcmp(os, "fedora") == 0) {
         printf("Running config on %s", os);
         system("touch ./configflag");
         system("sh fedoraConfig.sh");
-    } else if (strcmp(os "gentoo") == 0)) {
+    } if (strcmp(os, "gentoo") == 0) {
         printf("Running config on %s", os);
         system("touch ./configflag");
         system("sh gentooConfig.sh");
-    } else if (strcmp(os "freebsd") == 0)) {
+    } if (strcmp(os, "freebsd") == 0) {
         printf("Running config on %s", os);
         system("touch ./configflag");
         system("sh freebsdConfig.sh");
@@ -120,32 +162,39 @@ int config(const char *os) {
     }
 }
 
-int firewall(const char *os) {
-    if (strcmp(os "ubuntu") == 0) {
-        printf("Running firewall on %s", os);
-    } else if (strcmp(os "centos") == 0) {
-        printf("Running firewall on %s", os);
-    } else if (strcmp(os "fedora") == 0)) {
-        printf("Running firewall on %s", os);
-    } else if (strcmp(os "gentoo") == 0)) {
-        printf("Running firewall on %s", os);
-    } else if (strcmp(os "freebsd") == 0)) {
-        printf("Running firewall on %s", os);
-    } else {
-        return 0;
-    }
+int firewall(const char *os, const char *ports) {
+        if (strcmp(os, "ubuntu") == 0) {
+            printf("Running firewall on %s\n", os);
+            char buf[1];
+            int requiredsize = snprintf(buf, 0, "./ubuntuFirewall.sh -p \"%s\"", ports);
+            char command[requiredsize];
+            snprintf(command, sizeof command + 1, "./ubuntuFirewall.sh -p \"%s\"", ports);
+            printf("%s\n", command);
+            printf("%lu\n", sizeof command);
+            system(command);
+        } if (strcmp(os, "centos") == 0) {
+            printf("Running firewall on %s", os);
+        } if (strcmp(os, "fedora") == 0) {
+            printf("Running firewall on %s", os);
+        } if (strcmp(os, "gentoo") == 0) {
+            printf("Running firewall on %s", os);
+        } if (strcmp(os, "freebsd") == 0) {
+            printf("Running firewall on %s", os);
+        } else {
+            return 0;
+        }
 }
 
 int passwords(const char *os, const char *password) {
-    if (strcmp(os "ubuntu") == 0) {
+    if (strcmp(os, "ubuntu") == 0) {
         printf("Running passwords on %s", os);
-    } else if (strcmp(os "centos") == 0) {
+    } if (strcmp(os, "centos") == 0) {
         printf("Running passwords on %s", os);
-    } else if (strcmp(os "fedora") == 0) {
+    } if (strcmp(os, "fedora") == 0) {
         printf("Running passwords on %s", os);
-    } else if (strcmp(os "gentoo") == 0) {
+    } if (strcmp(os, "gentoo") == 0) {
         printf("Running passwords on %s", os);
-    } else if (strcmp(os "freebsd") == 0) {
+    } if (strcmp(os, "freebsd") == 0) {
         printf("Running passwords on %s", os);
     } else {
         return 0;
@@ -153,15 +202,15 @@ int passwords(const char *os, const char *password) {
 }
 
 int policies(const char *os) {
-    if (strcmp(os "ubuntu") == 0) {
+    if (strcmp(os, "ubuntu") == 0) {
         printf("Running policies on %s", os);
-    } else if (strcmp(os "centos") == 0) {
+    } if (strcmp(os, "centos") == 0) {
         printf("Running policies on %s", os);
-    } else if (strcmp(os "fedora") == 0) {
+    } if (strcmp(os, "fedora") == 0) {
         printf("Running policies on %s", os);
-    } else if (strcmp(os "gentoo") == 0) {
+    } if (strcmp(os, "gentoo") == 0) {
         printf("Running policies on %s", os);
-    } else if (strcmp(os "freebsd") == 0) {
+    } if (strcmp(os, "freebsd") == 0) {
         printf("Running policies on %s", os);
     } else {
         return 0;
@@ -169,15 +218,15 @@ int policies(const char *os) {
 }
 
 int malware(const char *os) {
-    if (strcmp(os "ubuntu") == 0) {
+    if (strcmp(os, "ubuntu") == 0) {
         printf("Running malware on %s", os);
-    } else if (strcmp(os "centos") == 0) {
+    } if (strcmp(os, "centos") == 0) {
         printf("Running malware on %s", os);
-    } else if (strcmp(os "fedora") == 0) {
+    } if (strcmp(os, "fedora") == 0) {
         printf("Running malware on %s", os);
-    } else if (strcmp(os "gentoo") == 0) {
+    } if (strcmp(os, "gentoo") == 0) {
         printf("Running malware on %s", os);
-    } else if (strcmp(os "freebsd") == 0) {
+    } if (strcmp(os, "freebsd") == 0) {
         printf("Running malware on %s", os);
     } else {
         return 0;
@@ -185,35 +234,35 @@ int malware(const char *os) {
 }
 
 int scans(const char *os) {
-    if (strcmp(os "ubuntu") == 0) {
+    if (strcmp(os, "ubuntu") == 0) {
         pthread_t pth;
         pthread_create(&pth,NULL,thoraciel,NULL);
         printf("Running scans on %s\n", os);
         system("sh ubuntuScans.sh");
         printf("Waiting for thoraciel to complete scans\n");
         pthread_join(pth,NULL);
-    } else if (strcmp(os "centos") == 0) {
+    } if (strcmp(os, "centos") == 0) {
         printf("Running scans on %s", os);
-    } else if (strcmp(os "fedora") == 0) {
+    } if (strcmp(os, "fedora") == 0) {
         printf("Running scans on %s", os);
-    } else if (strcmp(os "gentoo") == 0) {
+    } if (strcmp(os, "gentoo") == 0) {
         printf("Running scans on %s", os);
-    } else if (strcmp(os "freebsd") == 0) {
+    } if (strcmp(os, "freebsd") == 0) {
         printf("Running scans on %s", os);
         return 0;
     }
 }
 
 int updates(const char *os) {
-    if (strcmp(os "ubuntu") == 0) {
+    if (strcmp(os, "ubuntu") == 0) {
         printf("Running updates on %s", os);
-    } else if (strcmp(os "centos") == 0) {
+    } if (strcmp(os, "centos") == 0) {
         printf("Running updates on %s", os);
-    } else if (strcmp(os "fedora") == 0) {
+    } if (strcmp(os, "fedora") == 0) {
         printf("Running updates on %s", os);
-    } else if (strcmp(os "gentoo") == 0) {
+    } if (strcmp(os, "gentoo") == 0) {
         printf("Running updates on %s", os);
-    } else if (strcmp(os "freebsd") == 0) {
+    } if (strcmp(os, "freebsd") == 0) {
         printf("Running updates on %s", os);
     } else {
         return 0;
@@ -231,6 +280,7 @@ int usage() {
                    "-c Configures machariel for first-time use\n"
                    "-f Configures and enables the firewall\n"
                    "-h Display this message and exit\n"
+                   "-i \"<PORTS>\" Passes a list of ports to be allowed through the firewall. "
                    "-p <PASSWORD> Changes all user's passwords to the specified string. USE CAUTION.\n"
                    "-l Configures system policies.\n"
                    "-m Removes many common malwares and searches for certain malicious file types\n"
@@ -255,6 +305,7 @@ int main(int argc, char **argv) {
     char *bvalue = NULL;
     int cflag = 0;
     int fflag = 0;
+    char *fvalue = NULL;
     int hflag = 0;
     int pflag = 0;
     char *pvalue = NULL;
@@ -268,7 +319,7 @@ int main(int argc, char **argv) {
     int c;
 
     /* Iterates through the arguments and options, sets the corresponding flag to 1 if the arg is passed, sets the corresponding value to the passed string if applicable*/
-    while((c = getopt (argc, argv, "ab:cfhp:lmo:s:u:")) != -1)
+    while((c = getopt (argc, argv, "ab:cf:hp:lmo:s:u:")) != -1)
         switch(c) {
             case 'a' :
                 aflag = 1;
@@ -280,7 +331,16 @@ int main(int argc, char **argv) {
                 cflag = 1;
                 break;
             case 'f' :
-                fflag = 1;
+                fvalue = optarg;
+                int z = 0;
+                while (fvalue[z] != '\0') {
+                  if (fvalue[z] == ' ') {
+                    putchar(',');
+                  } else {
+                      putchar(fvalue[z]);
+                  }
+                  z++;
+                }
                 break;
             case 'h' :
                 hflag = 1;
@@ -323,47 +383,55 @@ int main(int argc, char **argv) {
         abort();
     }
 
-    if (aflag == 1 && ovalue != NULL) {
-        allactions(ovalue);
+
+    if (hflag == 1) {
+        usage();
+        abort();
+    }
+
+    /* Config goes first because -a doesn't neccessarily configure */
+
+    if (cflag == 1 && ovalue != NULL && configflag == 0) {
+        config(ovalue);
+    }
+
+    if (aflag == 1 && ovalue != NULL && pvalue != NULL && fvalue != NULL) {
+        allactions(ovalue, pvalue, fvalue);
     }
 
     if (bvalue != NULL && ovalue != NULL && aflag == 0) {
         backup(ovalue);
     }
 
-    if (cflag == 1 && ovalue != NULL && configflag == 0) {
-        config(ovalue);
+
+    if (fvalue != NULL && ovalue != NULL && aflag == 0) {
+        firewall(ovalue, fvalue);
     }
 
-    if (fflag == 1 && ovalue != NULL && aflag != 1 && configflag == 1) {
-        firewall(ovalue);
-    }
 
-    if (hflag == 1) {
-        usage();
-    }
-
-    if (pvalue != NULL && ovalue != NULL) {
+    if (pvalue != NULL && ovalue != NULL && aflag == 0) {
         passwords(ovalue, pvalue);
     }
 
-    if (lflag == 1 && ovalue != NULL) {
+    if (lflag == 1 && ovalue != NULL && aflag == 0) {
         policies(ovalue);
     }
 
-    if (mflag == 1 && ovalue != NULL) {
+    if (mflag == 1 && ovalue != NULL && aflag == 0) {
         malware(ovalue);
     }
 
+    /* this is just for testing...
     if (ovalue != NULL) {
         //printf("%s\n", ovalue);
     }
+    */
 
-    if (svalue != NULL && ovalue != NULL) {
+    if (svalue != NULL && ovalue != NULL && aflag == 0) {
         scans(ovalue);
     }
 
-    if (uflag == 1 && ovalue != NULL) {
+    if (uflag == 1 && ovalue != NULL && aflag == 0) {
         updates(ovalue);
     }
 }
