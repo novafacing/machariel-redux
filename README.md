@@ -1,14 +1,14 @@
 # machariel-redux
 A (VASTLY) updated version of the original high-school level Machariel script. Executes faster, utilizes multithreading, and will have support for:
 
-#With Full Functionality
+With Full Functionality:
 Ubuntu
 FreeBSD
 CentOS
 Fedora
 Gentoo
 
-#With Limited Functionality
+With Limited Functionality:
 Windows 7
 Windows 8
 Windows 8.1
