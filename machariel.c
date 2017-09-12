@@ -211,6 +211,8 @@ int passwords(const char *os, const char *password) {
 int policies(const char *os) {
     if (strcmp(os, "ubuntu") == 0) {
         printf("Running policies on %s", os);
+        char command[] = "./ubuntuPolicies.sh";
+        system(command);
     } if (strcmp(os, "centos") == 0) {
         printf("Running policies on %s", os);
     } if (strcmp(os, "fedora") == 0) {
@@ -263,6 +265,8 @@ int scans(const char *os) {
 int updates(const char *os) {
     if (strcmp(os, "ubuntu") == 0) {
         printf("Running updates on %s", os);
+        char command[] = "./ubuntuUpdates.sh";
+        system(command);
     } if (strcmp(os, "centos") == 0) {
         printf("Running updates on %s", os);
     } if (strcmp(os, "fedora") == 0) {
@@ -282,7 +286,7 @@ int usage() {
                    "machariel [OPTIONS]\n"
                    "First run MUST include -c flag\n"
                    "Flags:\n"
-                   "-a Performs all actions\n"
+                   "-a Performs all actions. -a must include -f, -o, and -p arguments.\n"
                    "-b Backs up key files to specified file\n"
                    "-c Configures machariel for first-time use\n"
                    "-f Configures and enables the firewall\n"
@@ -402,6 +406,10 @@ int main(int argc, char **argv) {
         config(ovalue);
     }
 
+    if ((aflag == 1 && ovalue == NULL) || (aflag == 1 && pvalue == NULL) || (aflag == 1 && fvalue == NULL)) {
+        usage();
+        abort();
+    }
     if (aflag == 1 && ovalue != NULL && pvalue != NULL && fvalue != NULL) {
         allactions(ovalue, pvalue, fvalue);
     }
