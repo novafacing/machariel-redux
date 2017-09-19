@@ -12,6 +12,7 @@
 # Acceptable UDP traffic
 
 # Acceptable TCP traffic
+# Theoretically this will get filled in by the iptables additions
 
 # Acceptable ICMP traffic
 
