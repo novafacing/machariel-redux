@@ -20,7 +20,7 @@
 #iptables -S >> /machariel/logs/iptables.log
 #mv ./rules.v4 /etc/iptables/rules.v4
 #iptables -I INPUT 1 -i lo -j ACCEPT
-#iptables -I INPUT 2 -p tcp -m tcp -m multiport ! --dports $PORTS -j ACCEPT
+#iptables -I INPUT 2 -p tcp -m tcp -m multiport ! --dports $PORTS -j DROP
 #iptables -A INPUT -j DROP
 #apt-get install iptables-persistent -y --force-yes --assume-yes
 #invoke-rc.d iptables-persistent save

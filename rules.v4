@@ -16,6 +16,7 @@
 # Acceptable ICMP traffic
 
 # Boilerplate acceptance policy
+# The first one basically makes sure your current connection won't die
 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 
