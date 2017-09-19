@@ -122,16 +122,16 @@ int backup(const char *os) {
         system("sh ubuntuBackup.sh");
     } if (strcmp(os, "centos") == 0) {
         printf("Running backup on %s", os);
-        system("sh centosBakup.sh");
+        system("sh centosBackup.sh");
     } if (strcmp(os, "fedora") == 0) {
         printf("Running backup on %s", os);
         system("sh fedoraBackup.sh");
     } if (strcmp(os, "gentoo") == 0) {
         printf("Running backup on %s", os);
-        printf("sh fedoraBakup.sh");
+        printf("sh fedoraBackup.sh");
     } if (strcmp(os, "freebsd") == 0) {
         printf("Running backup on %s", os);
-        printf("sh freebsdBakup.sh");
+        printf("sh freebsdBackup.sh");
     } else {
         return 0;
     }
@@ -174,12 +174,40 @@ int firewall(const char *os, const char *ports) {
             system(command);
         } if (strcmp(os, "centos") == 0) {
             printf("Running firewall on %s", os);
+            char buf[1];
+            int requiredsize = snprintf(buf, 0, "./centosFirewall.sh -p \"%s\"", ports);
+            char command[requiredsize];
+            snprintf(command, sizeof command + 1, "./centosFirewall.sh -p \"%s\"", ports);
+            printf("%s\n", command);
+            printf("%lu\n", sizeof command);
+            system(command);
         } if (strcmp(os, "fedora") == 0) {
             printf("Running firewall on %s", os);
+            char buf[1];
+            int requiredsize = snprintf(buf, 0, "./fedoraFirewall.sh -p \"%s\"", ports);
+            char command[requiredsize];
+            snprintf(command, sizeof command + 1, "./fedoraFirewall.sh -p \"%s\"", ports);
+            printf("%s\n", command);
+            printf("%lu\n", sizeof command);
+            system(command);
         } if (strcmp(os, "gentoo") == 0) {
             printf("Running firewall on %s", os);
+            char buf[1];
+            int requiredsize = snprintf(buf, 0, "./gentooFirewall.sh -p \"%s\"", ports);
+            char command[requiredsize];
+            snprintf(command, sizeof command + 1, "./gentooFirewall.sh -p \"%s\"", ports);
+            printf("%s\n", command);
+            printf("%lu\n", sizeof command);
+            system(command);
         } if (strcmp(os, "freebsd") == 0) {
             printf("Running firewall on %s", os);
+            char buf[1];
+            int requiredsize = snprintf(buf, 0, "./freebsdFirewall.sh -p \"%s\"", ports);
+            char command[requiredsize];
+            snprintf(command, sizeof command + 1, "./freebsdFirewall.sh -p \"%s\"", ports);
+            printf("%s\n", command);
+            printf("%lu\n", sizeof command);
+            system(command);
         } else {
             return 0;
         }
@@ -197,12 +225,40 @@ int passwords(const char *os, const char *password) {
         system(command);
     } if (strcmp(os, "centos") == 0) {
         printf("Running passwords on %s", os);
+        char buf[1];
+        int requiredsize = snprintf(buf, 0, "./centosPasswords.sh -p \"%s\"", password);
+        char command[requiredsize];
+        snprintf(command, sizeof command + 1, "./centosPasswords.sh -p \"%s\"", password);
+        printf("Debug: %s\n", command);
+        printf("Debug: %lu\n", sizeof command);
+        system(command);
     } if (strcmp(os, "fedora") == 0) {
         printf("Running passwords on %s", os);
+        char buf[1];
+        int requiredsize = snprintf(buf, 0, "./fedoraPasswords.sh -p \"%s\"", password);
+        char command[requiredsize];
+        snprintf(command, sizeof command + 1, "./fedoraPasswords.sh -p \"%s\"", password);
+        printf("Debug: %s\n", command);
+        printf("Debug: %lu\n", sizeof command);
+        system(command);
     } if (strcmp(os, "gentoo") == 0) {
         printf("Running passwords on %s", os);
+        char buf[1];
+        int requiredsize = snprintf(buf, 0, "./gentooPasswords.sh -p \"%s\"", password);
+        char command[requiredsize];
+        snprintf(command, sizeof command + 1, "./gentooPasswords.sh -p \"%s\"", password);
+        printf("Debug: %s\n", command);
+        printf("Debug: %lu\n", sizeof command);
+        system(command);
     } if (strcmp(os, "freebsd") == 0) {
         printf("Running passwords on %s", os);
+        char buf[1];
+        int requiredsize = snprintf(buf, 0, "./freebsdPasswords.sh -p \"%s\"", password);
+        char command[requiredsize];
+        snprintf(command, sizeof command + 1, "./freebsdPasswords.sh -p \"%s\"", password);
+        printf("Debug: %s\n", command);
+        printf("Debug: %lu\n", sizeof command);
+        system(command);
     } else {
         return 0;
     }
@@ -215,12 +271,20 @@ int policies(const char *os) {
         system(command);
     } if (strcmp(os, "centos") == 0) {
         printf("Running policies on %s", os);
+        char command[] = "./centosPolicies.sh";
+        system(command);
     } if (strcmp(os, "fedora") == 0) {
         printf("Running policies on %s", os);
+        char command[] = "./fedoraPolicies.sh";
+        system(command);
     } if (strcmp(os, "gentoo") == 0) {
         printf("Running policies on %s", os);
+        char command[] = "./gentooPolicies.sh";
+        system(command);
     } if (strcmp(os, "freebsd") == 0) {
         printf("Running policies on %s", os);
+        char command[] = "./freebsdPolicies.sh";
+        system(command);
     } else {
         return 0;
     }
@@ -252,12 +316,36 @@ int scans(const char *os) {
         pthread_join(pth,NULL);
     } if (strcmp(os, "centos") == 0) {
         printf("Running scans on %s", os);
+        pthread_t pth;
+        pthread_create(&pth,NULL,thoraciel,NULL);
+        printf("Running scans on %s\n", os);
+        system("sh centosScans.sh");
+        printf("Waiting for thoraciel to complete scans\n");
+        pthread_join(pth,NULL);
     } if (strcmp(os, "fedora") == 0) {
         printf("Running scans on %s", os);
+        pthread_t pth;
+        pthread_create(&pth,NULL,thoraciel,NULL);
+        printf("Running scans on %s\n", os);
+        system("sh fedoraScans.sh");
+        printf("Waiting for thoraciel to complete scans\n");
+        pthread_join(pth,NULL);
     } if (strcmp(os, "gentoo") == 0) {
         printf("Running scans on %s", os);
+        pthread_t pth;
+        pthread_create(&pth,NULL,thoraciel,NULL);
+        printf("Running scans on %s\n", os);
+        system("sh gentooScans.sh");
+        printf("Waiting for thoraciel to complete scans\n");
+        pthread_join(pth,NULL);
     } if (strcmp(os, "freebsd") == 0) {
         printf("Running scans on %s", os);
+        pthread_t pth;
+        pthread_create(&pth,NULL,thoraciel,NULL);
+        printf("Running scans on %s\n", os);
+        system("sh freebsdScans.sh");
+        printf("Waiting for thoraciel to complete scans\n");
+        pthread_join(pth,NULL);
         return 0;
     }
 }
